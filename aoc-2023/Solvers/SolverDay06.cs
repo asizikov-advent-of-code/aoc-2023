@@ -14,7 +14,6 @@ public class SolverDay06 : Solver
             var d = t * (time - t);
             if (d > distance) win++;
         }
-        
         Console.WriteLine(win);
     }
     

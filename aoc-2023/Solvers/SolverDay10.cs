@@ -2,7 +2,7 @@ namespace aoc_2023.Solvers;
 
 public class SolverDay10 : Solver
 {
-    public override string FileName => "10-01";
+    public override string FileName => "10-02";
 
     public override void Solve(string[] input)
     {
@@ -22,7 +22,7 @@ public class SolverDay10 : Solver
             gridCopy[r] = new char[input[0].Length];
             for (var c = 0; c < input[0].Length; c++)
             {
-                gridCopy[r][c] = input[r][c];
+                gridCopy[r][c] = '.';
             }
         }
         
@@ -37,19 +37,72 @@ public class SolverDay10 : Solver
             }
         }
         
-        //print gridCopy
+        
+        var inside = 0;
          for (var r = 0; r < input.Length; r++)
          {
-             Console.WriteLine($"{string.Join("", gridCopy[r])}");
+             for (var c = 0; c < input[0].Length; c++)
+             {
+                 if (gridCopy[r][c] != '.') continue;
+                 
+                 var intersections = rayCast((r, c));
+                 gridCopy[r][c] = intersections % 2 != 0 ? 'I' : '.';
+                 if (intersections % 2 != 0) inside++;
+             }
+         }
+         
+         void printGridCopy()
+         {
+             for (var r = 0; r < input.Length; r++)
+             {
+                 Console.WriteLine($"{string.Join("", gridCopy[r])}");
+             }
+         }
+    
+         int rayCast((int r, int c) tile)
+         {
+             var intersections = 0;
+             var (nr, nc) = (tile.r, tile.c + 1);
+             
+             while (nr >= 0 && nr < input.Length && nc >= 0 && nc < input[0].Length)
+             {
+                if (gridCopy[nr][nc] == 'X')
+                {
+                    if (input[nr][nc] == '|') intersections++;
+                    if (input[nr][nc] is 'F' or 'L')
+                    {
+                        var start = input[nr][nc];
+                        var intersected = false;
+                        for (var i = nc; i < input[0].Length; i++)
+                        {
+                            if (input[nr][i] == '7')
+                            {
+                                intersected = start == 'L';
+                                break;
+                            } 
+                            if (input[nr][i] == 'J')
+                            {
+                                intersected = start == 'F';
+                                break;
+                            }
+                        }
+                        if (intersected) intersections++;
+                    }
+                }
+                (nr, nc) = (nr + 0, nc + 1);
+             }
+
+             return intersections;
          }
         
         long visit((int r, int c) pos)
         {
             var visited = new HashSet<(int r, int c)>();
             var queue = new Queue<(int r, int c)>();
-
+    
             visited.Add(pos);
-            
+    
+            var possibleMoves = new[] { 0, 0, 0, 0 }; // down, up, right, left
             foreach (var dir in new (int dr, int dc)[] { (0, 1), (1, 0), (-1, 0), (0, -1) })
             {
                 var (nr, nc) = (pos.r + dir.dr, pos.c + dir.dc);
@@ -65,10 +118,26 @@ public class SolverDay10 : Solver
                 // down
                 if (dir is (1, 0) && input[nr][nc] is '-' or 'F' or '7') continue;
                 
+                if (dir.dr == 1) possibleMoves[0] = 1;
+                if (dir.dr == -1) possibleMoves[1] = 1;
+                if (dir.dc == 1) possibleMoves[2] = 1;
+                if (dir.dc == -1) possibleMoves[3] = 1;
                 queue.Enqueue((nr, nc));
             }
-            
-            
+    
+            var pipe = '?';
+            if (possibleMoves is [1, 1, 0, 0]) pipe = '|';
+            if (possibleMoves is [0, 0, 1, 1]) pipe = '-';
+            if (possibleMoves is [1, 0, 0, 1]) pipe = '7';
+            if (possibleMoves is [0, 1, 1, 0]) pipe = 'L';
+            if (possibleMoves is [1, 0, 1, 0]) pipe = 'F';
+            if (possibleMoves is [0, 1, 0, 1]) pipe = 'J';
+    
+            gridCopy[pos.r][pos.c] = 'X';
+    
+            var row = input[pos.r].ToCharArray();
+            row[pos.c] = pipe;
+            input[pos.r] = new string(row);
             
             var maxSteps = 1L;
             var steps = 1L;
@@ -97,5 +166,4 @@ public class SolverDay10 : Solver
             return maxSteps;
         }
     }
-    
 }

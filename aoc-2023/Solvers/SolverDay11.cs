@@ -6,49 +6,44 @@ public class SolverDay11 : Solver
 
     public override void Solve(string[] input)
     {
-        var (galaxies, coordToNode) = ToGraph(input);
-
-        var distances = new Dictionary<(int r, int c), Dictionary<(int r, int c), long>>();
+        var (galaxies, graph) = ToGraph(input);
+        var distances = new Dictionary<Node, Dictionary<Node, long>>();
         foreach (var galaxy in galaxies)
         {
             var cost = FindDistances(galaxy);
             distances.Add(galaxy, cost);
         }
         
-        var processed = new HashSet<(int r, int c)>();
-        var pairs = new List<((int r, int c) g, long dist)>();
-        foreach (var galaxy in galaxies)
+        var pairs = new List<(Node g, long dist)>();
+        var galaxiesList = galaxies.ToList();
+        for (var i = 0; i < galaxiesList.Count; i++)
         {
-            foreach (var other in galaxies)
+            for (var j = i + 1; j < galaxiesList.Count; j++)
             {
-                if (galaxy == other) continue;
-                if (processed.Contains(other)) continue;
-                pairs.Add((galaxy, distances[galaxy][other]));
+                pairs.Add((galaxiesList[i], distances[galaxiesList[i]][galaxiesList[j]]));
             }
-        
-            processed.Add(galaxy);
         }
         
         Console.WriteLine("Sum: " + pairs.Sum(p => p.dist));
 
-        Dictionary<(int r, int c), long> FindDistances((int r, int c) galaxy)
+        Dictionary<Node, long> FindDistances(Node galaxy)
         {
             var queue = new PriorityQueue<Node, long>();
-            var distances = coordToNode.Values.ToDictionary<Node, (int r, int c), long>(nodes => nodes.Position, nodes => int.MaxValue);
+            var distances = graph.ToDictionary<Node, Node, long>(nodes => nodes, nodes => int.MaxValue);
 
             distances[galaxy] = 0;
-            queue.Enqueue(coordToNode[galaxy], 0L);
+            queue.Enqueue(galaxy, 0L);
             
             while (queue.Count != 0)
             {
                 var current = queue.Dequeue();
                 foreach (var (neighbour, cost) in current.Neighbours)
                 {
-                    if (neighbour == null) continue;
-                    var alt = distances[current.Position] + cost;
-                    if (alt < distances[neighbour.Position])
+                    if (neighbour is null) continue;
+                    var alt = distances[current] + cost;
+                    if (alt < distances[neighbour])
                     {
-                        distances[neighbour.Position] = alt;
+                        distances[neighbour] = alt;
                         queue.Enqueue(neighbour, alt);
                     }
                 }
@@ -58,14 +53,17 @@ public class SolverDay11 : Solver
         }
     }
 
-    private (HashSet<(int r, int c)> galaxies, Dictionary<(int r, int c), Node> coordToNode) ToGraph(string[] input)
+    private (HashSet<Node> galaxies, List<Node> graph) ToGraph(string[] input)
     {
         var directions = new (int r, int c)[] {(1, 0), (-1, 0), (0, 1), (0, -1)};
+        var graph = new List<Node>();
         var coordToNode = new Dictionary<(int r, int c), Node>();
-        var rowsToExpand = new HashSet<int>();
-        var colsToExpand = new HashSet<int>();
         
-        var galaxies = new HashSet<(int r, int c)>();
+        var galaxies = new HashSet<Node>();
+        var (rowsToExpand, colsToExpand) = (
+            new HashSet<int>(Enumerable.Range(0, input.Length)), 
+            new HashSet<int>(Enumerable.Range(0, input[0].Length))
+            );
         
         for (var r = 0; r < input.Length; r++)
         {
@@ -77,55 +75,40 @@ public class SolverDay11 : Solver
                     IsGalaxy = input[r][c] == '#'
                 };
                 coordToNode.Add((r, c), node);
-                if (node.IsGalaxy) galaxies.Add((r, c));
+                graph.Add(node);
+                if (!node.IsGalaxy) continue;
+                
+                galaxies.Add(node);
+                rowsToExpand.Remove(r);
+                colsToExpand.Remove(c);
             }
         }
         
-        for (var c = 0; c < input[0].Length; c++)
+        foreach (var node in graph)
         {
-            var shouldExpand = true;
-            foreach (var t in input)
-            {
-                if (t[c] == '#') shouldExpand = false;
-            }
-            if (shouldExpand) colsToExpand.Add(c);
-        }
-        
-        for (var r = 0; r < input.Length; r++)
-        {
-            var shouldExpand = input[r].All(x => x != '#');
-            if (shouldExpand) rowsToExpand.Add(r);
-        }
-        
-        
-        foreach (var node in coordToNode.Values)
-        {
-            var neighbours = new List<(Node? n, int cost)>();
             foreach (var dir in directions)
             {
                 (int r, int c) next = (node.Position.r + dir.r, node.Position.c + dir.c);
                 if (next.r < 0 || next.r >= input.Length || next.c < 0 || next.c >= input[0].Length)
                 {
-                    neighbours.Add((null, 0));
+                    node.Neighbours.Add((null, 0));
                     continue;
                 }
                 var cost = 0;
                 const int mult = 1000_000;
                 if (rowsToExpand.Contains(next.r)) cost += mult;
                 if (colsToExpand.Contains(next.c)) cost += mult;
-                neighbours.Add((coordToNode[next], cost == 0 ? 1 : cost));
+                node.Neighbours.Add((coordToNode[next], cost == 0 ? 1 : cost));
             }
-
-            node.Neighbours = neighbours.ToArray();
         }
 
-        return (galaxies, coordToNode);
+        return (galaxies, graph);
     }
     
     private class Node
     {
         public (int r, int c) Position { get; set; }
         public bool IsGalaxy { get; set; }
-        public (Node? n, int cost)[] Neighbours { get; set; } = new (Node? n, int cost)[4];
+        public List<(Node? n, int cost)> Neighbours { get; set; } = new(4);
     }
 }

@@ -1,5 +1,6 @@
 namespace aoc_2023.Solvers;
 
+
 public class NullSolver : Solver
 {
     private readonly string dayNumber;
@@ -12,6 +13,4 @@ public class NullSolver : Solver
     {
         Console.WriteLine($"Failed to find Solver for day {dayNumber}");
     }
-
-    public override string FileName { get; } = string.Empty;
 }

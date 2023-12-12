@@ -1,9 +1,9 @@
 
 namespace aoc_2023.Solvers;
 
+[PuzzleSolver("08-02", 8)]
 public class SolverDay08 : Solver
 {
-    public override string FileName => "08-02";
     
     public override void Solve(string[] input)
     {

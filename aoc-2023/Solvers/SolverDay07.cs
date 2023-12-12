@@ -1,6 +1,7 @@
 namespace aoc_2023.Solvers;
 
 
+[PuzzleSolver("07-01", 7)]
 public class SolverDay07 : Solver
 {
     enum HandType
@@ -14,7 +15,6 @@ public class SolverDay07 : Solver
         HighCard = 400
     }
     
-    public override string FileName => "07-02";
 
     public override void Solve(string[] input)
     {

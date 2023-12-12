@@ -5,8 +5,7 @@ using aoc_2023.Solvers;
 var dayNumberOverride = "";
 var dayNumber = dayNumberOverride == "" ? DateTime.Now.Day.ToString("00") : dayNumberOverride;
 
-var solver = SolversProvider.Get(dayNumber);
-var dataFileName = solver.FileName;
+var (solver, dataFileName) = SolversProvider.Get(dayNumber);
 
 var sw = Stopwatch.StartNew();
 

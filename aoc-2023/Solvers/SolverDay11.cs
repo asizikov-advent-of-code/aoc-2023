@@ -1,9 +1,8 @@
 namespace aoc_2023.Solvers;
 
+[PuzzleSolver("11-01", 11)]
 public class SolverDay11 : Solver
 {
-    public override string FileName => "11-02";
-
     public override void Solve(string[] input)
     {
         var (galaxies, graph) = ToGraph(input);

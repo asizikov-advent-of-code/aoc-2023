@@ -2,9 +2,9 @@ using System.Linq.Expressions;
 
 namespace aoc_2023.Solvers;
 
+[PuzzleSolver("04-02", 4)]
 public class SolverDay04 : Solver
 {
-    public override string FileName { get; } = "04-02";
     public override void Solve(string[] input)
     {
         var list = new List<(int number, int points)>();

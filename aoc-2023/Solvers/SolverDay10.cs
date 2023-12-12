@@ -1,9 +1,8 @@
 namespace aoc_2023.Solvers;
 
+[PuzzleSolver("10-02", 10)]
 public class SolverDay10 : Solver
 {
-    public override string FileName => "10-02";
-
     public override void Solve(string[] input)
     {
         var pipeToDirection = new Dictionary<char, (int dr, int dc)[]>()

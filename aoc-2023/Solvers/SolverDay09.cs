@@ -2,9 +2,9 @@ using System.Diagnostics;
 
 namespace aoc_2023.Solvers;
 
+[PuzzleSolver("09-02", 9)]
 public class SolverDay09 : Solver
 {
-    public override string FileName { get; } = "09-02";
 
     public override void Solve(string[] input)
     {

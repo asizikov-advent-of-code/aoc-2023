@@ -32,6 +32,7 @@ public class SolverDay12 : Solver
             
             var pos = 0;
             while (pos < stage.Length && stage[pos] == '.') pos++;
+            if (pos > 0) return CountWays(stage[pos..], groups, currentGroup, memo);
             
             for (; pos < stage.Length; pos++)
             {

@@ -366,3 +366,5 @@ FodyWeavers.xsd
 output/
 
 .DS_Store
+
+InputFiles/*

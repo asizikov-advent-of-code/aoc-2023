@@ -1,109 +1,77 @@
-using System.Collections.Specialized;
-using System.Text;
-
 namespace aoc_2023.Solvers;
 
 public class SolverDay12 : Solver
 {
-    public override string FileName => "12-01";
-    
-    public override void Solve(string[] input)
+    public override string FileName => "12-02";
+
+    public override void Solve(string[] lines)
     {
         var answer = 0L;
-        var tmp = 0;
-        foreach (var line in input)
+        foreach (var line in lines)
         {
+            var tmp = line.Split(' ')[0];
+            var stage = new Span<char>($"{tmp}?{tmp}?{tmp}?{tmp}?{tmp}.".ToCharArray());
 
-            var parts = line.Split(' ');
+            var pp = line.Split(' ')[1];
+            var groups = $"{pp},{pp},{pp},{pp},{pp}".Split(",").Select(int.Parse).ToList();
 
-            var sb = new StringBuilder();
-            sb.Append(parts[0]);
-            // for (var i = 0; i < 4; i++)
-            // {
-            //     sb.Append('?');
-            //     sb.Append(parts[0]);
-            // }
-
-            var state = sb.ToString().ToCharArray();
-            
-            
-            sb.Clear();
-            sb.Append(parts[1]);
-            // for (var i = 0; i < 4; i++)
-            // {
-            //     sb.Append(',');
-            //     sb.Append(parts[1]);
-            // }
-            
-            var groups = sb.ToString().Split(',').Select(int.Parse).ToArray();
-            
-            var memo = new Dictionary<string, long>();
-            var count = CountWays(state, 0, 0, groups, memo, ref tmp);
-            count = (long)Math.Pow(count, 4);
-            answer += count;
-            
-            Console.WriteLine(parts[0] + " arrangements " + count);
-            answer += count;
+            answer += CountWays(stage, groups, 0,new Dictionary<string, long>());
         }
+
         Console.WriteLine("Answer: " + answer);
-    }
 
-    private long CountWays(char[] state, int pos, int group, int[] groups, Dictionary<string, long> memo, ref int tmp)
-    {
-        if (pos == state.Length)
+        long CountWays(Span<char> stage, List<int> groups, int currentGroup, Dictionary<string, long> memo)
         {
-            //Console.WriteLine(++tmp + "<) " + new string(state));
-            var (_, valid) = CountGroupsFound();
-            return !valid ? 0 : 1;
-        }
-        
-        
-        if (state[pos] != '?')
-        {
-            return CountWays(state, pos + 1, group, groups, memo, ref tmp);
-        }
-
-        var count = 0L;
-        state[pos] = '.';
-        count += CountWays(state, pos + 1, group, groups, memo, ref tmp);
-        state[pos] = '#';
-        count += CountWays(state, pos + 1, group, groups, memo, ref tmp);
-        state[pos] = '?';
-        return count;
-
-        (List<int> groups, bool isValid) CountGroupsFound()
-        {
-            var groupsFound = new List<int>();
-            for (var i = 0; i < state.Length; i++)
+            var key = new string(stage) + currentGroup;
+            
+            if (memo.ContainsKey(key)) return memo[key];
+            if (currentGroup == groups.Count) return stage.Contains('#') ? 0 : 1;
+            
+            var currentGroupSize = groups[currentGroup];
+            if (currentGroupSize > stage.Length) return memo[key] = 0;
+            
+            var pos = 0;
+            while (pos < stage.Length && stage[pos] == '.') pos++;
+            
+            for (; pos < stage.Length; pos++)
             {
-                if (state[i] == '#')
+                switch (stage[pos])
                 {
-                    group++;
-                }
-                else
-                {
-                    if (group > 0)
+                    case '#':
                     {
-                        groupsFound.Add(group);
-                    }
+                        if (--currentGroupSize < 0)
+                        {
+                            return memo[key] = 0;
+                        }
 
-                    group = 0;
+                        break;
+                    }
+                    case '.' when currentGroupSize == 0:
+                    {
+                        return CountWays(stage[pos..], groups, currentGroup + 1, memo);
+                    }
+                    case '.':
+                        return 0;
+                    default:
+                    {
+                        var count = 0L;
+                        if (currentGroupSize == 0 || currentGroupSize == groups[currentGroup])
+                        {
+                            stage[pos] = '.';
+                            count += CountWays(stage, groups, currentGroup, memo);
+                        }
+                        if (currentGroupSize > 0)
+                        {
+                            stage[pos] = '#';
+                            count += CountWays(stage, groups, currentGroup, memo);
+                        }
+                        stage[pos] = '?';
+                        return memo[key] = count;
+                    }
                 }
             }
-
-            if (group > 0)
-            {
-                groupsFound.Add(group);
-            }
-
-            if (groupsFound.Count != groups.Length)
-            {
-                return (groupsFound, false);
-            }
-
-            return groupsFound.Where((t, i) => t != groups[i]).Any() ? (groupsFound, false) : (groupsFound, true);
+            
+            return 0;
         }
     }
-
-    
 }

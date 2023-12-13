@@ -26,59 +26,48 @@ public class SolverDay13 : Solver
 
         void processPattern()
         {
+            var mistakes = new int [pattern[0].Length-1];
             for (var c = 0; c < pattern[0].Length-1; c++)
             {
-                var foundMirror = true;
                 foreach (var t in pattern)
                 {
                     var (left, right) = (c, c + 1);
-                    var reflects = true;
                     while (left >= 0 && right < pattern[0].Length)
                     {
-                        if (t[left] != t[right])
+                        if (t[left--] != t[right++])
                         {
-                            reflects = false;
-                            break;
+                            mistakes[c]++;
                         }
-                        left--;
-                        right++;
                     }
-
-                    if (reflects) continue;
-                    foundMirror = false;
-                    break;
                 }
-
-                if (!foundMirror) continue;
-                answer += (c + 1);
-                return;
             }
-
+            
+            var verticalMistakes = new int [pattern.Count-1];
             for (var r = 0; r < pattern.Count-1; r++)
             {
-                var foundMirror = true;
-                
                 for (var c = 0; c < pattern[0].Length; c++)
                 {
                     var (top, bottom) = (r, r + 1);
-                    var reflects = true;
                     while (top >= 0 && bottom < pattern.Count)
                     {
-                        if (pattern[top][c] != pattern[bottom][c])
+                        if (pattern[top--][c] != pattern[bottom++][c])
                         {
-                            reflects = false;
-                            break;
+                            verticalMistakes[r]++;
                         }
-                        top--;
-                        bottom++;
                     }
-
-                    if (reflects) continue;
-                    foundMirror = false;
-                    break;
                 }
-
-                if (!foundMirror) continue;
+            }
+            
+            for (var c = 0; c < pattern[0].Length-1; c++)
+            {
+                if (mistakes[c] != 1) continue;
+                answer += c + 1;
+                return;
+            }
+            
+            for (var r = 0; r < pattern.Count-1; r++)
+            {
+                if (verticalMistakes[r] != 1) continue;
                 answer += (r + 1) * 100;
                 return;
             }

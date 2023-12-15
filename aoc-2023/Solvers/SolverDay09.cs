@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace aoc_2023.Solvers;
 
 [PuzzleSolver("09-02", 9)]

@@ -364,6 +364,7 @@ FodyWeavers.xsd
 .idea/
 
 output/
+.vscode/
 
 .DS_Store
 

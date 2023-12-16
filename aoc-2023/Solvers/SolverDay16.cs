@@ -5,8 +5,6 @@ public class SolverDay16 : Solver
 {
     public override void Solve(string[] input)
     {
-        //Console.WriteLine("Answer: " + CastBeam((0,-1),(0, 1)));
-
         var answer = 0;
 
         for (var r = 0; r < input.Length; r++)
@@ -28,9 +26,8 @@ public class SolverDay16 : Solver
             var beams = new List<((int r, int c) pos, (int dr, int dc) dir)> {(startPos,startDir)};
             var energizedTiles = new HashSet<(int r, int c)>{(startPos.r + startDir.dr, startPos.c + startDir.dc)};
 
-            var complete = false;
             var visited = new HashSet<((int r, int c)pos, (int dr, int dc)dir)>();
-            while (!complete) 
+            while (beams.Count != 0) 
             {
                 var newBeams = new List<((int r, int c) pos, (int dr, int dc) dir)>();
                 foreach (var (pos, dir) in beams)
@@ -90,8 +87,6 @@ public class SolverDay16 : Solver
                             break;
                     }
                 }
-
-                complete = newBeams.Count == 0;
                 beams = newBeams;
             }
             return energizedTiles.Count;

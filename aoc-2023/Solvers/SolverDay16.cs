@@ -23,15 +23,16 @@ public class SolverDay16 : Solver
 
         int CastBeam((int r, int c) startPos, (int dr, int dc) startDir) 
         {
-            var beams = new List<((int r, int c) pos, (int dr, int dc) dir)> {(startPos,startDir)};
-            var energizedTiles = new HashSet<(int r, int c)>{(startPos.r + startDir.dr, startPos.c + startDir.dc)};
+            var beams = new Queue<((int r, int c) pos, (int dr, int dc) dir)>(new[] { ((startPos, startDir)) });
+            var energizedTiles = new HashSet<(int r, int c)>{ (startPos.r + startDir.dr, startPos.c + startDir.dc) };
 
             var visited = new HashSet<((int r, int c)pos, (int dr, int dc)dir)>();
             while (beams.Count != 0) 
             {
-                var newBeams = new List<((int r, int c) pos, (int dr, int dc) dir)>();
-                foreach (var (pos, dir) in beams)
+                var size = beams.Count;
+                while (size --> 0)
                 {
+                    var (pos, dir) = beams.Dequeue();
                     if (visited.Contains((pos,dir))) continue;
                     visited.Add((pos,dir));
 
@@ -43,39 +44,38 @@ public class SolverDay16 : Solver
                     switch (input[nr][nc])
                     {
                         case '.':
-                            newBeams.Add(((nr, nc), dir));
+                            beams.Enqueue(((nr, nc), dir));
                             break;
                         case '|' when dir is (0, 1) or (0, -1):
-                            newBeams.Add(((nr, nc), (1, 0)));
-                            newBeams.Add(((nr, nc), (-1, 0)));
+                            beams.Enqueue(((nr, nc), (1, 0)));
+                            beams.Enqueue(((nr, nc), (-1, 0)));
                             break;
                         case '|':
-                            newBeams.Add(((nr, nc), dir));
+                            beams.Enqueue(((nr, nc), dir));
                             break;
                         case '-' when dir is (1, 0) or (-1, 0):
-                            newBeams.Add(((nr, nc), (0, 1)));
-                            newBeams.Add(((nr, nc), (0, -1)));
+                            beams.Enqueue(((nr, nc), (0, 1)));
+                            beams.Enqueue(((nr, nc), (0, -1)));
                             break;
                         case '-':
-                            newBeams.Add(((nr, nc), dir));
+                            beams.Enqueue(((nr, nc), dir));
                             break;
                         case '/' when dir is (0, 1) or (0, -1):
-                            newBeams.Add(((nr, nc), (-1 * dir.dc, dir.dr)));
+                            beams.Enqueue(((nr, nc), (-1 * dir.dc, dir.dr)));
                             break;
                         case '/' when dir is (1, 0) or (-1,0):
-                            newBeams.Add(((nr, nc), (dir.dc, -1 * dir.dr)));
+                            beams.Enqueue(((nr, nc), (dir.dc, -1 * dir.dr)));
                             break;
                         case '\\' when dir is (0, 1) or (0, -1):
-                            newBeams.Add(((nr, nc), (dir.dc, dir.dr)));
+                            beams.Enqueue(((nr, nc), (dir.dc, dir.dr)));
                             break;
                         case '\\' when dir is (1, 0) or (-1, 0):
-                            newBeams.Add(((nr, nc), (dir.dc, dir.dr)));
+                            beams.Enqueue(((nr, nc), (dir.dc, dir.dr)));
                             break;
                         default:
                             break;
                     }
                 }
-                beams = newBeams;
             }
             return energizedTiles.Count;
         }

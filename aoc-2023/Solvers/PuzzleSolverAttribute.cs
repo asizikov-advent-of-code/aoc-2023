@@ -1,14 +1,12 @@
 namespace aoc_2023.Solvers;
 
-[AttributeUsage(AttributeTargets.Class)]
-public class PuzzleSolverAttribute : Attribute
+[AttributeUsage(AttributeTargets.Method)]
+public class PuzzleInputAttribute : Attribute
 {
     public string FileName { get; }
-    public int DayNumber { get; }
-    
-    public PuzzleSolverAttribute(string fileName, int dayNumber)
+
+    public PuzzleInputAttribute(string fileName)
     {
         FileName = fileName;
-        DayNumber = dayNumber;
     }
 }

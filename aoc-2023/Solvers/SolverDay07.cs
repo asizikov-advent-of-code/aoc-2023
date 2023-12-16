@@ -1,7 +1,6 @@
 namespace aoc_2023.Solvers;
 
 
-[PuzzleSolver("07-01", 7)]
 public class SolverDay07 : Solver
 {
     enum HandType
@@ -15,7 +14,7 @@ public class SolverDay07 : Solver
         HighCard = 400
     }
     
-
+    [PuzzleInput("07-01")]
     public override void Solve(string[] input)
     {
         var cardOrder = new Dictionary<char, int>

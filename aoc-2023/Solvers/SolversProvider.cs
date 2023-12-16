@@ -8,20 +8,18 @@ public abstract class SolversProvider
     {
         if (dayNumber == null) throw new ArgumentNullException(nameof(dayNumber));
         
-        var types = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => t is { IsClass: true, IsAbstract: false } && t.IsSubclassOf(typeof(Solver)));
-        
-        var type = types.FirstOrDefault(t => t.GetCustomAttribute<PuzzleSolverAttribute>()?.DayNumber.ToString("00") == dayNumber);
-        
-        if (type is null)
-        {
-            return (new NullSolver(dayNumber), string.Empty);
-        }
-        
+        var type = Assembly.GetExecutingAssembly().GetType($"aoc_2023.Solvers.SolverDay{dayNumber}");
+        if (type is null) return (new NullSolver(dayNumber), string.Empty);
+
+        // find PuzzleInputAttribute and get the file name
+        var method = type.GetMethods().FirstOrDefault(m => m.GetCustomAttribute<PuzzleInputAttribute>() is not null);
+        if (method is null) return (new NullSolver(dayNumber), string.Empty);
+        var attribute = method.GetCustomAttribute<PuzzleInputAttribute>();
+
         var instance = Activator.CreateInstance(type);
         if (instance is Solver solver)
         {
-            return (solver, type.GetCustomAttribute<PuzzleSolverAttribute>()?.FileName ?? string.Empty );
+            return (solver, attribute?.FileName ?? string.Empty );
         }
 
         return (new NullSolver(dayNumber), string.Empty);

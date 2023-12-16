@@ -1,8 +1,8 @@
 namespace aoc_2023.Solvers;
 
-[PuzzleSolver("14-02", 14)]
 public class SolverDay14 : Solver
 {
+    [PuzzleInput("14-02")]
     public override void Solve(string[] input)
     {
         var platform = input.Select(l => l.ToCharArray()).ToArray();

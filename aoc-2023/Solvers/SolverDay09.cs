@@ -1,9 +1,8 @@
 namespace aoc_2023.Solvers;
 
-[PuzzleSolver("09-02", 9)]
 public class SolverDay09 : Solver
 {
-
+    [PuzzleInput("09-02")]
     public override void Solve(string[] input)
     {
         var answer = input.Select(line => line.Split(" ")

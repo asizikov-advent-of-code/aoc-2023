@@ -1,8 +1,8 @@
 namespace aoc_2023.Solvers;
 
-[PuzzleSolver("05-01", 5)]
 public class SolverDay05 : Solver
 {
+    [PuzzleInput("05-01")]
     public override void Solve(string[] input)
     {
         var seedsToProcess = new List<(long start, long end)[]>(); 

@@ -2,10 +2,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace aoc_2023.Solvers;
 
-[PuzzleSolver("15-02", 15)]
 public class SolverDay15 : Solver
 {
-    //246762
+    [PuzzleInput("15-02")]
     public override void Solve(string[] input)
     {
         var parts = input[0].Split(',');

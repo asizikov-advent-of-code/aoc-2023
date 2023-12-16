@@ -59,29 +59,17 @@ public class SolverDay16 : Solver
                         case '-':
                             newBeams.Add(((nr, nc), dir));
                             break;
-                        case '/' when dir is (0, 1):
-                            newBeams.Add(((nr, nc), (-1, 0)));
+                        case '/' when dir is (0, 1) or (0, -1):
+                            newBeams.Add(((nr, nc), (-1 * dir.dc, dir.dr)));
                             break;
-                        case '/' when dir is (0, -1):
-                            newBeams.Add(((nr, nc), (1, 0)));
+                        case '/' when dir is (1, 0) or (-1,0):
+                            newBeams.Add(((nr, nc), (dir.dc, -1 * dir.dr)));
                             break;
-                        case '/' when dir is (1, 0):
-                            newBeams.Add(((nr, nc), (0, -1)));
+                        case '\\' when dir is (0, 1) or (0, -1):
+                            newBeams.Add(((nr, nc), (dir.dc, dir.dr)));
                             break;
-                        case '/' when dir is (-1, 0):
-                            newBeams.Add(((nr, nc), (0, 1)));
-                            break;
-                        case '\\' when dir is (0, 1):
-                            newBeams.Add(((nr, nc), (1, 0)));
-                            break;
-                        case '\\' when dir is (0, -1):
-                            newBeams.Add(((nr, nc), (-1, 0)));
-                            break;
-                        case '\\' when dir is (1, 0):
-                            newBeams.Add(((nr, nc), (0, 1)));
-                            break;
-                        case '\\' when dir is (-1, 0):
-                            newBeams.Add(((nr, nc), (0, -1)));
+                        case '\\' when dir is (1, 0) or (-1, 0):
+                            newBeams.Add(((nr, nc), (dir.dc, dir.dr)));
                             break;
                         default:
                             break;

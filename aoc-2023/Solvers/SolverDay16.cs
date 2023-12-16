@@ -33,7 +33,7 @@ public class SolverDay16 : Solver
                 while (size --> 0)
                 {
                     var (pos, dir) = beams.Dequeue();
-                    if (visited.Contains((pos,dir))) continue;
+                    if (visited.Contains((pos, dir))) continue;
                     visited.Add((pos,dir));
 
                     var (nr, nc) = (pos.r + dir.dr, pos.c + dir.dc);
@@ -60,16 +60,10 @@ public class SolverDay16 : Solver
                         case '-':
                             beams.Enqueue(((nr, nc), dir));
                             break;
-                        case '/' when dir is (0, 1) or (0, -1):
-                            beams.Enqueue(((nr, nc), (-1 * dir.dc, dir.dr)));
+                        case '/':
+                            beams.Enqueue(((nr, nc), (-1 * dir.dc, -1 * dir.dr)));
                             break;
-                        case '/' when dir is (1, 0) or (-1,0):
-                            beams.Enqueue(((nr, nc), (dir.dc, -1 * dir.dr)));
-                            break;
-                        case '\\' when dir is (0, 1) or (0, -1):
-                            beams.Enqueue(((nr, nc), (dir.dc, dir.dr)));
-                            break;
-                        case '\\' when dir is (1, 0) or (-1, 0):
+                        case '\\':
                             beams.Enqueue(((nr, nc), (dir.dc, dir.dr)));
                             break;
                         default:

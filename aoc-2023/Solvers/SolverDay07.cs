@@ -13,7 +13,7 @@ public class SolverDay07 : Solver
         OnePair = 500,
         HighCard = 400
     }
-    
+
     [PuzzleInput("07-01")]
     public override void Solve(string[] input)
     {
@@ -39,7 +39,7 @@ public class SolverDay07 : Solver
         {
             var parts = line.Split(" ");
             var (hand, bid) = (parts[0], int.Parse(parts[1].Trim()));
-            
+
             var counter = new Dictionary<char, int>();
             foreach (var ch in hand)
             {
@@ -49,7 +49,7 @@ public class SolverDay07 : Solver
 
             var handType = HandType.HighCard;
             counter.TryGetValue('J', out var jokers);
-            
+
             var occurrences = counter.Where(kv => kv.Key != 'J')
                 .Select(kv => kv.Value)
                 .OrderByDescending(x => x)
@@ -74,7 +74,7 @@ public class SolverDay07 : Solver
 
             cards.Add((hand, handType, bid));
         }
-        
+
         cards.Sort((a, b) =>
         {
             if (a.type != b.type) return a.type - b.type;
@@ -85,7 +85,7 @@ public class SolverDay07 : Solver
                     return cardOrder[a.hand[i]] - cardOrder[b.hand[i]];
                 }
             }
-            
+
             return 0;
         });
 

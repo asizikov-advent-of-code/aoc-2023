@@ -22,17 +22,17 @@ public class SolverDay12 : Solver
         long CountWays(Span<char> stage, List<int> groups, int currentGroup, Dictionary<string, long> memo)
         {
             var key = new string(stage) + currentGroup;
-            
+
             if (memo.ContainsKey(key)) return memo[key];
             if (currentGroup == groups.Count) return stage.Contains('#') ? 0 : 1;
-            
+
             var currentGroupSize = groups[currentGroup];
             if (currentGroupSize > stage.Length) return memo[key] = 0;
-            
+
             var pos = 0;
             while (pos < stage.Length && stage[pos] == '.') pos++;
             if (pos > 0) return CountWays(stage[pos..], groups, currentGroup, memo);
-            
+
             for (; pos < stage.Length; pos++)
             {
                 switch (stage[pos])
@@ -70,7 +70,7 @@ public class SolverDay12 : Solver
                     }
                 }
             }
-            
+
             return 0;
         }
     }

@@ -21,13 +21,13 @@ public class SolverDay16 : Solver
 
         Console.WriteLine("Answer: " + answer);
 
-        int CastBeam((int r, int c) startPos, (int dr, int dc) startDir) 
+        int CastBeam((int r, int c) startPos, (int dr, int dc) startDir)
         {
             var beams = new Queue<((int r, int c) pos, (int dr, int dc) dir)>(new[] { ((startPos, startDir)) });
             var energizedTiles = new HashSet<(int r, int c)>{ (startPos.r + startDir.dr, startPos.c + startDir.dc) };
 
             var visited = new HashSet<((int r, int c)pos, (int dr, int dc)dir)>();
-            while (beams.Count != 0) 
+            while (beams.Count != 0)
             {
                 var size = beams.Count;
                 while (size --> 0)

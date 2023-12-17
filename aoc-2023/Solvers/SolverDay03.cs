@@ -11,7 +11,7 @@ public class SolverDay03 : Solver
         };
 
         var gears = new Dictionary<(int r, int c), List<int>>();
-        
+
         for (var r = 0; r < input.Length; r++)
         {
             for (var c = 0; c < input[r].Length;)
@@ -56,7 +56,7 @@ public class SolverDay03 : Solver
             var power = gears[gear][0] * gears[gear][1];
             answer += power;
         }
-        
+
         Console.WriteLine(answer);
 
         (bool adjusted, List<(int sr, int sc)> gears) Adjusted(int r, int c)
@@ -72,8 +72,8 @@ public class SolverDay03 : Solver
                 }
             }
 
-            return foundGears.Count != 0 ? 
-                (true, foundGears) 
+            return foundGears.Count != 0 ?
+                (true, foundGears)
                 : (false, new());
         }
     }

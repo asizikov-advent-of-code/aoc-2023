@@ -20,7 +20,7 @@ public class SolverDay13 : Solver
             }
         }
         processPattern();
-        
+
         Console.WriteLine($"Answer: {answer}");
 
 
@@ -41,7 +41,7 @@ public class SolverDay13 : Solver
                     }
                 }
             }
-            
+
             var verticalMistakes = new int [pattern.Count-1];
             for (var r = 0; r < pattern.Count-1; r++)
             {
@@ -57,14 +57,14 @@ public class SolverDay13 : Solver
                     }
                 }
             }
-            
+
             for (var c = 0; c < pattern[0].Length-1; c++)
             {
                 if (mistakes[c] != 1) continue;
                 answer += c + 1;
                 return;
             }
-            
+
             for (var r = 0; r < pattern.Count-1; r++)
             {
                 if (verticalMistakes[r] != 1) continue;

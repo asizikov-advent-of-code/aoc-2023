@@ -7,7 +7,7 @@ public class SolverDay08 : Solver
     public override void Solve(string[] input)
     {
         var instructions = input[0].Trim();
-        
+
         var map = new Dictionary<string, List<string>>();
         var camels = new List<string>();
         for (var i = 2; i < input.Length; i++)
@@ -17,7 +17,7 @@ public class SolverDay08 : Solver
            var node = parts[0];
            var children = parts[1].Trim('(', ')').Split(", ");
            var (left, right ) = (children[0], children[1]);
-           
+
            map.TryAdd(node, new List<string>());
            map[node] = new List<string> {left, right};
            if (node[^1] == 'A') camels.Add(node);
@@ -38,21 +38,21 @@ public class SolverDay08 : Solver
                     periods[camels[i]] = steps + 1;
                 }
             }
-            
+
             dir++;
             dir %= instructions.Length;
             steps++;
         }
-        
+
         Console.WriteLine($"Periods: {string.Join(", ", periods.Select(kv => $"{kv.Key}: {kv.Value}"))}");
-        
+
         Console.WriteLine($": {periods.Values.Aggregate(Lcm)}");
-        
+
         long Lcm (long a, long b)
         {
             return Math.Abs(a * b) / Gcd(a, b);
         }
-        
+
         long Gcd (long a, long b)
         {
             while (b != 0)

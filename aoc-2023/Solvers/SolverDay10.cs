@@ -50,16 +50,8 @@ public class SolverDay10 : Solver
              }
          }
 
-         Console.WriteLine(inside);
-         
-         void printGridCopy()
-         {
-             for (var r = 0; r < input.Length; r++)
-             {
-                 Console.WriteLine($"{string.Join("", gridCopy[r])}");
-             }
-         }
-    
+         Console.WriteLine(inside);        
+   
          int rayCast((int r, int c) tile)
          {
              var intersections = 0;

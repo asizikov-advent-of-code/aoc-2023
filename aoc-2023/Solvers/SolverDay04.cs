@@ -23,9 +23,9 @@ public class SolverDay04 : Solver
         var answer = 0;
         for (var i = 0; i < list.Count; i++)
         {
-            visit(i);    
+            visit(i);
         }
-        
+
         Console.WriteLine(answer);
 
         void visit(int pos)

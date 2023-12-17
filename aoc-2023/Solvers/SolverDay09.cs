@@ -9,7 +9,7 @@ public class SolverDay09 : Solver
                         .Select(int.Parse).ToList())
                         .Select(Extrapolate)
                         .Sum();
-        
+
         Console.WriteLine(answer);
 
         int Extrapolate(List<int> history)
@@ -34,7 +34,7 @@ public class SolverDay09 : Solver
             {
                 extrapolated = iterations[i][0] - extrapolated;
             }
-            
+
             return extrapolated;
         }
     }

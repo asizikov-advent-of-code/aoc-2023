@@ -5,7 +5,7 @@ public class SolverDay05 : Solver
     [PuzzleInput("05-01")]
     public override void Solve(string[] input)
     {
-        var seedsToProcess = new List<(long start, long end)[]>(); 
+        var seedsToProcess = new List<(long start, long end)[]>();
         var (mapSource, mapTarget) = (0, 0);
         foreach (var line in input)
         {
@@ -36,7 +36,7 @@ public class SolverDay05 : Solver
                 var (target, source, size) = (mapping[0], mapping[1], mapping[2]);
                 var (sourceStart, sourceEnd) = (source, source + size - 1);
                 var (targetStart, targetEnd) = (target, target + size - 1);
-                
+
                 var tempSeeds = new List<(long start, long end)[]>();
                 foreach (var seed in seedsToProcess)
                 {
@@ -45,7 +45,7 @@ public class SolverDay05 : Solver
                         tempSeeds.Add(seed);
                         continue;
                     }
-                    
+
                     if (seed[mapSource].start >= sourceStart && seed[mapSource].end <= sourceEnd)
                     {
                         seed[mapTarget].start = targetStart + seed[mapSource].start - sourceStart;
@@ -53,25 +53,25 @@ public class SolverDay05 : Solver
                         tempSeeds.Add(seed);
                         continue;
                     }
-                    
+
                     if (seed[mapSource].start < sourceStart)
                     {
                         var newSeed = seed.ToArray();
                         newSeed[mapSource].end = sourceStart - 1;
                         tempSeeds.Add(newSeed);
                     }
-                    
+
                     if (seed[mapSource].end > sourceEnd)
                     {
                         var newSeed = seed.ToArray();
                         newSeed[mapSource].start = sourceEnd + 1;
                         tempSeeds.Add(newSeed);
                     }
-                    
+
                     seed[mapTarget].start = targetStart + Math.Max(seed[mapSource].start, sourceStart) - sourceStart;
                     seed[mapTarget].end = targetStart + Math.Min(seed[mapSource].end, sourceEnd) - sourceStart;
                     tempSeeds.Add(seed);
- 
+
                 }
                 seedsToProcess = tempSeeds;
             }
@@ -84,7 +84,7 @@ public class SolverDay05 : Solver
             else if (line.StartsWith("humidity-to-location map:")) (mapSource, mapTarget) = (6, 7);
             else
                 Console.WriteLine($"Unknown input: {line}");
-            
+
             Console.WriteLine(line);
         }
 
@@ -96,7 +96,7 @@ public class SolverDay05 : Solver
                 seedsToProcess[i][mapTarget].end = seedsToProcess[i][mapSource].end;
             }
         }
-        
+
         Console.WriteLine(seedsToProcess.Min(x => x[7].start));
     }
 }

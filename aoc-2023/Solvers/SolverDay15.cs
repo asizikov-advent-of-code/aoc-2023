@@ -57,7 +57,7 @@ public class SolverDay15 : Solver
 
     class Lense
     {
-        public string Tag {get;set;}
+        public string Tag {get;set;} = string.Empty;
         public int Val {get;set;}
     };
 }

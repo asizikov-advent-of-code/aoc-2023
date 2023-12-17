@@ -20,4 +20,3 @@ solver.Solve(input);
 
 Console.WriteLine("Elapsed: " + sw.ElapsedMilliseconds + " ms");
 Console.WriteLine("----------------");
-

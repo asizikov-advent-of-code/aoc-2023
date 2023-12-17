@@ -12,10 +12,10 @@ public class SolverDay17 : Solver
 
         Console.WriteLine($"Answer: {answer}");
 
-        bool isValid((int r, int c) p) 
+        bool isValid((int r, int c) p)
             => p.r >= 0 && p.r < input.Length && p.c >= 0 && p.c < input[0].Length;
 
-        void process((int r, int c) pos) 
+        void process((int r, int c) pos)
         {
             var queue = new PriorityQueue<((int r, int c), (int dr, int dc), int steps, int loss), int>();
             queue.Enqueue((pos, (1,0), -1, 0), 0);
@@ -31,7 +31,7 @@ public class SolverDay17 : Solver
                 }
                 cost[(p,d,s)] = l;
 
-                foreach (var (dr, dc) in new [] { (d.dr, d.dc), (d.dc, -d.dr), (-d.dc, d.dr) } ) 
+                foreach (var (dr, dc) in new [] { (d.dr, d.dc), (d.dc, -d.dr), (-d.dc, d.dr) } )
                 {
                     var sameDir = d.dr == dr && d.dc == dc;
                     if (sameDir && s >= 10) continue;
@@ -46,7 +46,7 @@ public class SolverDay17 : Solver
                         {
                             nextCost += input[p.r + dr * i][p.c + dc * i] - '0';
                         }
-   
+
                         queue.Enqueue( (next, (dr, dc), sameDir ? (s + 1) : 4, nextCost), nextCost);
                     }
                 }

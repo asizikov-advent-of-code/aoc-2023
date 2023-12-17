@@ -1,6 +1,6 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay18 : Solver 
+public class SolverDay18 : Solver
 {
     [PuzzleInput("18-01")]
     public override void Solve(string[] input)

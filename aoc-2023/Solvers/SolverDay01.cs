@@ -10,11 +10,11 @@ public class SolverDay01 : Solver
             .Select((w, i) => (w, i + 1))
             .ToList()
             .ForEach(t => trie.Add(t.w, t.Item2));
-        
+
         var answer = input.Select(l => ToCalibrationValue(l.AsSpan())).Sum();
-        
+
         Console.WriteLine($"Answer: {answer}");
-        
+
         int ToCalibrationValue(ReadOnlySpan<char> line)
         {
             var value = 0;
@@ -25,13 +25,13 @@ public class SolverDay01 : Solver
                     value = line[i] - '0';
                     break;
                 }
-                
+
                 var (val, found) = trie.Get(line[i..]);
                 if (!found) continue;
                 value = val;
                 break;
             }
-            
+
             for (var i = line.Length - 1; i >= 0; i--)
             {
                 if (char.IsDigit(line[i]))
@@ -48,11 +48,11 @@ public class SolverDay01 : Solver
             return value;
         }
     }
-    
+
     private class Trie
     {
         private readonly Node root = new Node();
-        
+
         public void Add(string word, int value)
         {
             var node = root;
@@ -62,7 +62,7 @@ public class SolverDay01 : Solver
             }
             node.Value = value;
         }
-        
+
         public (int val, bool found) Get(ReadOnlySpan<char> word)
         {
             var node = root;
@@ -80,13 +80,13 @@ public class SolverDay01 : Solver
             }
             return (0, false);
         }
-        
+
         private class Node
         {
             private readonly Dictionary<char, Node> children = new();
-            
+
             public int? Value { get; set; }
-            
+
             public Node GetOrAddChild(char c)
             {
                 if (!children.TryGetValue(c, out var child))
@@ -96,7 +96,7 @@ public class SolverDay01 : Solver
                 }
                 return child;
             }
-            
+
             public Node? GetChild(char c)
             {
                 children.TryGetValue(c, out var child);

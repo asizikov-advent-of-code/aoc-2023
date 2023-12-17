@@ -12,7 +12,7 @@ public class SolverDay11 : Solver
             var cost = FindDistances(galaxy);
             distances.Add(galaxy, cost);
         }
-        
+
         var pairs = new List<(Node g, long dist)>();
         var galaxiesList = galaxies.ToList();
         for (var i = 0; i < galaxiesList.Count; i++)
@@ -22,7 +22,7 @@ public class SolverDay11 : Solver
                 pairs.Add((galaxiesList[i], distances[galaxiesList[i]][galaxiesList[j]]));
             }
         }
-        
+
         Console.WriteLine("Sum: " + pairs.Sum(p => p.dist));
 
         Dictionary<Node, long> FindDistances(Node galaxy)
@@ -32,7 +32,7 @@ public class SolverDay11 : Solver
 
             distances[galaxy] = 0;
             queue.Enqueue(galaxy, 0L);
-            
+
             while (queue.Count != 0)
             {
                 var current = queue.Dequeue();
@@ -57,13 +57,13 @@ public class SolverDay11 : Solver
         var directions = new (int r, int c)[] {(1, 0), (-1, 0), (0, 1), (0, -1)};
         var graph = new List<Node>();
         var coordToNode = new Dictionary<(int r, int c), Node>();
-        
+
         var galaxies = new HashSet<Node>();
         var (rowsToExpand, colsToExpand) = (
-            new HashSet<int>(Enumerable.Range(0, input.Length)), 
+            new HashSet<int>(Enumerable.Range(0, input.Length)),
             new HashSet<int>(Enumerable.Range(0, input[0].Length))
             );
-        
+
         for (var r = 0; r < input.Length; r++)
         {
             for (var c = 0; c < input[0].Length; c++)
@@ -76,13 +76,13 @@ public class SolverDay11 : Solver
                 coordToNode.Add((r, c), node);
                 graph.Add(node);
                 if (!node.IsGalaxy) continue;
-                
+
                 galaxies.Add(node);
                 rowsToExpand.Remove(r);
                 colsToExpand.Remove(c);
             }
         }
-        
+
         foreach (var node in graph)
         {
             foreach (var dir in directions)
@@ -103,7 +103,7 @@ public class SolverDay11 : Solver
 
         return (galaxies, graph);
     }
-    
+
     private class Node
     {
         public (int r, int c) Position { get; set; }

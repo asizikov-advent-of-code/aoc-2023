@@ -9,6 +9,8 @@ public class NullSolver : Solver
     {
         this.dayNumber = dayNumber;
     }
+
+    [PuzzleInput("00-00")]
     public override void Solve(string[] input)
     {
         Console.WriteLine($"Failed to find Solver for day {dayNumber}");

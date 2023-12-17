@@ -19,7 +19,7 @@ public class SolverDay14 : Solver
             memory[l].Add(i);
         }
 
-        
+
         for (int i = 0; i < 500; i++)
         {
             var indices = memory[history[i]];
@@ -33,7 +33,7 @@ public class SolverDay14 : Solver
                 }
             }
         }
-        
+
         int load()
         {
             var load = 0;
@@ -69,7 +69,7 @@ public class SolverDay14 : Solver
                     (platform[pos.r][pos.c], platform[r][c]) = (platform[r][c], platform[pos.r][pos.c]);
                 }
             }
-            
+
             // tilt left
             for (var c = 0; c < width; c++)
             {
@@ -86,7 +86,7 @@ public class SolverDay14 : Solver
                     (platform[pos.r][pos.c], platform[r][c]) = (platform[r][c], platform[pos.r][pos.c]);
                 }
             }
-            
+
             // tilt down
             for (var r = height - 1; r >= 0; r--)
             {
@@ -103,9 +103,9 @@ public class SolverDay14 : Solver
                     (platform[pos.r][pos.c], platform[r][c]) = (platform[r][c], platform[pos.r][pos.c]);
                 }
             }
-            
+
             // tilt right
-            
+
             for (var c = width - 1; c >= 0; c--)
             {
                 for (var r = 0; r < height; r++)
@@ -121,7 +121,7 @@ public class SolverDay14 : Solver
                     (platform[pos.r][pos.c], platform[r][c]) = (platform[r][c], platform[pos.r][pos.c]);
                 }
             }
-            
+
         }
     }
 }

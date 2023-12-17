@@ -6,7 +6,7 @@ public class SolverDay02 : Solver
     public override void Solve(string[] input)
     {
         var answer = 0;
-        for (var i = 0; i < input.Length; i++) 
+        for (var i = 0; i < input.Length; i++)
         {
             var bag = new Dictionary<string, int>();
             foreach (var hand in input[i].Split(": ")[1].Split("; "))

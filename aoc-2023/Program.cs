@@ -13,8 +13,11 @@ Console.WriteLine($"Processing {dataFileName} for day {dayNumber}");
 Console.WriteLine("----------------");
 
 var input = DataProvider.ReadLines(dataFileName);
+Console.WriteLine("Input loaded in " + sw.ElapsedMilliseconds + " ms");
+sw.Restart();
+
 solver.Solve(input);
 
 Console.WriteLine("Elapsed: " + sw.ElapsedMilliseconds + " ms");
-Console.WriteLine("--------------");
+Console.WriteLine("----------------");
 

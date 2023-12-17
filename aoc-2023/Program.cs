@@ -12,7 +12,7 @@ var sw = Stopwatch.StartNew();
 Console.WriteLine($"Processing {dataFileName} for day {dayNumber}");
 Console.WriteLine("----------------");
 
-var input = DataProvider.ReadLines(dataFileName);
+var input = PuzzleInputReader.ReadLines(dataFileName);
 Console.WriteLine("Input loaded in " + sw.ElapsedMilliseconds + " ms");
 sw.Restart();
 

@@ -1,6 +1,6 @@
 namespace aoc_2023;
 
-public static class DataProvider
+public static class PuzzleInputReader
 {
     public static string[] ReadLines(string fileName)
     {

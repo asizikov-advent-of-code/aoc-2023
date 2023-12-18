@@ -33,8 +33,7 @@ public class SolverDay16 : Solver
                 while (size --> 0)
                 {
                     var (pos, dir) = beams.Dequeue();
-                    if (visited.Contains((pos, dir))) continue;
-                    visited.Add((pos,dir));
+                    if (!visited.Add((pos,dir))) continue;
 
                     var (nr, nc) = (pos.r + dir.dr, pos.c + dir.dc);
                     if (nr < 0 || nr >= input.Length || nc < 0 || nc >= input[0].Length) continue;
@@ -65,8 +64,6 @@ public class SolverDay16 : Solver
                             break;
                         case '\\':
                             beams.Enqueue(((nr, nc), (dir.dc, dir.dr)));
-                            break;
-                        default:
                             break;
                     }
                 }

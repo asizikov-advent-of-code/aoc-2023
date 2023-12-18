@@ -6,7 +6,7 @@ public abstract class SolversProvider
 {
     public static (Solver, string dataFileName) Get(string dayNumber)
     {
-        if (dayNumber == null) throw new ArgumentNullException(nameof(dayNumber));
+        if (dayNumber is null) throw new ArgumentNullException(nameof(dayNumber));
 
         var type = Assembly.GetExecutingAssembly().GetType($"aoc_2023.Solvers.SolverDay{dayNumber}");
         if (type is null) return (new NullSolver(dayNumber), string.Empty);

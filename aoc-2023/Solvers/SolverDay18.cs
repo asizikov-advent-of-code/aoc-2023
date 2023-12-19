@@ -4,7 +4,7 @@ namespace aoc_2023.Solvers;
 
 public class SolverDay18 : Solver
 {
-    [PuzzleInput("18-01")]
+    [PuzzleInput("18-02")]
     public override void Solve(string[] input)
     {
         var coordinates = new List<(long r, long c)>

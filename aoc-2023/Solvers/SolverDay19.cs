@@ -5,82 +5,95 @@ public class SolverDay19 : Solver
     [PuzzleInput("19-02")]
     public override void Solve(string[] input)
     {
-        var isParts = false;
         var workflows = new Dictionary<string, string[]>();
-        var parts = new List<Dictionary<char, int>>();
         foreach (var line in input)
         {
-            if (line == "") isParts = true;
-            else if (!isParts)
-            {
+            if (line == "") break;
                 var key = line[..line.IndexOf('{')];
                 var instructions = line[(line.IndexOf('{') + 1)..^1];
                 var rules = instructions.Split(',');
                 workflows.Add(key, rules);
-            }
-            else parts.Add(FromString(line));
         }
-        var answer = 0;
+        var answer = 0L;
 
-        foreach (var part in parts)
+        simulate();
+
+        Console.WriteLine("Answer: " + answer);
+
+        void simulate()
         {
-            Console.WriteLine("Processing part: " + string.Join(",", part.Select(kv => $"{kv.Key} {kv.Value}")));
-            var workflowName = "in";
-            var processed = false;
-            while (!processed)
+            var q = new Queue<(string wf, Dictionary<char, (int l, int r)>)>();
+            q.Enqueue(("in", new Dictionary<char, (int l, int r)>
             {
-                Console.WriteLine("Workflow: " + workflowName);
-                var workflow = workflows[workflowName];
-                for (var i = 0; i < workflow.Length; i++)
+                ['x'] = (1,4000),
+                ['m'] = (1,4000),
+                ['a'] = (1,4000),
+                ['s'] = (1,4000)
+            }));
+
+            while (q.Count > 0)
+            {
+                var (workflow, parts) = q.Dequeue();
+                
+                switch (workflow)
                 {
-                    var rule = workflow[i];
-                    var (applied, next) = process(rule, part);
-                    if (applied)
+                    case "R":
+                        continue;
+                    case "A":
+                        answer += parts.Aggregate(1L, (current, part) => current * (part.Value.r - part.Value.l + 1));
+                        continue;
+                }
+
+                foreach (var rule in workflows[workflow])
+                {
+                    var results = process(rule, parts, workflow);
+                    foreach (var result in results)
                     {
-                        if (next is "R" or "A")
-                        {
-                            processed = true;
-                            if (next == "A") answer += part.Select(kv => kv.Value).Sum();
-                            break;
-                        }
-                        workflowName = next;
-                        break;
+                        if (result.applied) q.Enqueue((result.next, result.slice));
+                        else parts = result.slice;
                     }
                 }
             }
         }
-
-        Console.WriteLine("Answer: " + answer);
-
-        (bool applied, string next) process(string rule, Dictionary<char ,int> part)
+        
+        List<(Dictionary<char, (int l, int r)> slice, string next, bool applied)> process(
+            string rule, 
+            Dictionary<char, (int l, int r)> part, 
+            string workflow)
         {
+            var left = new Dictionary<char, (int l, int r)>(part);
+            var right = new Dictionary<char, (int l, int r)>(part);
+            
             if (rule.Contains(':'))
             {
                 var separator = rule.IndexOf(':');
-                var key = rule[0];
-                var op = rule[1];
-                var dest = rule[(separator + 1)..];
-                var value = int.Parse(rule[2..separator]);
+                var (key, op, dest, value) = (rule[0], rule[1], rule[(separator + 1)..], int.Parse(rule[2..separator]));
+                
+                var (l, r) = part[key];
                 switch (op)
                 {
                     case '<' :
-                        if (part[key] < value) return (true, dest);
-                        break;
+                        if (l > value) return [(left, workflow, false)];
+                        left[key] = (left[key].l, value - 1);
+                        right[key] = (value, right[key].r);
+                        return
+                        [
+                            (left, dest, true),
+                            (right, workflow, false)
+                        ];
                     case '>' :
-                        if (part[key] > value) return (true, dest);
-                        break;
+                        if (r < value) return [(left, workflow, false)];
+                        left[key] = (left[key].l, value);
+                        right[key] = (value + 1, right[key].r);
+                        return                 
+                        [
+                            (left, workflow, false),
+                            (right, dest, true)
+                        ];
                 }
                         
             }
-            else return (true, rule);
-            return (false, "");
+            return [(left, rule, true)];
         }
-    }
-    
-    private static Dictionary<char, int> FromString(string line)
-    {
-        return line[1..^1].Split(',')
-            .Select(x => x.Split('='))
-            .ToDictionary(x => x[0][0], x => int.Parse(x[1]));
     }
 }

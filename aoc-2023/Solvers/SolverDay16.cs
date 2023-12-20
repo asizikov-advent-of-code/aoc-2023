@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay16 : Solver
+public class SolverDay16 : ISolver
 {
     [PuzzleInput("16-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var answer = 0;
 
@@ -23,7 +23,7 @@ public class SolverDay16 : Solver
 
         int CastBeam((int r, int c) startPos, (int dr, int dc) startDir)
         {
-            var beams = new Queue<((int r, int c) pos, (int dr, int dc) dir)>(new[] { ((startPos, startDir)) });
+            var beams = new Queue<((int r, int c) pos, (int dr, int dc) dir)>(new[] { (startPos, startDir) });
             var energizedTiles = new HashSet<(int r, int c)>{ (startPos.r + startDir.dr, startPos.c + startDir.dc) };
 
             var visited = new HashSet<((int r, int c)pos, (int dr, int dc)dir)>();

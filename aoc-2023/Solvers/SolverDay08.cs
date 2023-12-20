@@ -1,10 +1,10 @@
 
 namespace aoc_2023.Solvers;
 
-public class SolverDay08 : Solver
+public class SolverDay08 : ISolver
 {
     [PuzzleInput("08-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var instructions = input[0].Trim();
 
@@ -18,8 +18,8 @@ public class SolverDay08 : Solver
            var children = parts[1].Trim('(', ')').Split(", ");
            var (left, right ) = (children[0], children[1]);
 
-           map.TryAdd(node, new List<string>());
-           map[node] = new List<string> {left, right};
+           map.TryAdd(node, []);
+           map[node] = [left, right];
            if (node[^1] == 'A') camels.Add(node);
         }
 
@@ -33,10 +33,7 @@ public class SolverDay08 : Solver
             {
                 camels[i] = map[camels[i]][child];;
                 if (camels[i][^1] != 'Z') continue;
-                if (!periods.ContainsKey(camels[i]))
-                {
-                    periods[camels[i]] = steps + 1;
-                }
+                if (!periods.ContainsKey(camels[i])) periods[camels[i]] = steps + 1;
             }
 
             dir++;
@@ -48,20 +45,7 @@ public class SolverDay08 : Solver
 
         Console.WriteLine($": {periods.Values.Aggregate(Lcm)}");
 
-        long Lcm (long a, long b)
-        {
-            return Math.Abs(a * b) / Gcd(a, b);
-        }
-
-        long Gcd (long a, long b)
-        {
-            while (b != 0)
-            {
-                var temp = b;
-                b = a % b;
-                a = temp;
-            }
-            return a;
-        }
+        long Lcm (long a, long b) => Math.Abs(a * b) / Gcd(a, b);
+        long Gcd (long a, long b) => b == 0 ? a : Gcd(b, a % b);
     }
 }

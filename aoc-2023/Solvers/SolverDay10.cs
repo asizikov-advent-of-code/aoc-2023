@@ -1,11 +1,11 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay10 : Solver
+public class SolverDay10 : ISolver
 {
     [PuzzleInput("10-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
-        var pipeToDirection = new Dictionary<char, (int dr, int dc)[]>()
+        var pipeToDirection = new Dictionary<char, (int dr, int dc)[]>
         {
             ['|'] = new[] { (-1, 0), (1, 0) },
             ['-'] = new[] { (0, 1), (0, -1) },
@@ -35,64 +35,64 @@ public class SolverDay10 : Solver
                 break;
             }
         }
-        
-        
+
+
         var inside = 0;
-         for (var r = 0; r < input.Length; r++)
-         {
-             for (var c = 0; c < input[0].Length; c++)
-             {
-                 if (gridCopy[r][c] != '.') continue;
-                 
-                 var intersections = rayCast((r, c));
-                 gridCopy[r][c] = intersections % 2 != 0 ? 'I' : '.';
-                 if (intersections % 2 != 0) inside++;
-             }
-         }
+        for (var r = 0; r < input.Length; r++)
+        {
+            for (var c = 0; c < input[0].Length; c++)
+            {
+                if (gridCopy[r][c] != '.') continue;
 
-         Console.WriteLine(inside);        
-   
-         int rayCast((int r, int c) tile)
-         {
-             var intersections = 0;
-             var (nr, nc) = (tile.r, tile.c + 1);
-             
-             while (nr >= 0 && nr < input.Length && nc >= 0 && nc < input[0].Length)
-             {
-                 if (gridCopy[nr][nc] != 'X')
-                 {
-                     (nr, nc) = (nr + 0, nc + 1);
-                     continue;
-                 }
+                var intersections = rayCast((r, c));
+                gridCopy[r][c] = intersections % 2 != 0 ? 'I' : '.';
+                if (intersections % 2 != 0) inside++;
+            }
+        }
 
-                 if (input[nr][nc] == '|') intersections++;
-                 if (input[nr][nc] is 'F' or 'L')
-                 {
-                     var start = input[nr][nc];
-                     var intersected = false;
-                     for (var i = nc; i < input[0].Length; i++)
-                     {
-                         if (input[nr][i] == '7')
-                         {
-                             intersected = start == 'L';
-                             break;
-                         }
+        Console.WriteLine(inside);
 
-                         if (input[nr][i] == 'J')
-                         {
-                             intersected = start == 'F';
-                             break;
-                         }
-                     }
+        int rayCast((int r, int c) tile)
+        {
+            var intersections = 0;
+            var (nr, nc) = (tile.r, tile.c + 1);
 
-                     if (intersected) intersections++;
-                 }
+            while (nr >= 0 && nr < input.Length && nc >= 0 && nc < input[0].Length)
+            {
+                if (gridCopy[nr][nc] != 'X')
+                {
+                    (nr, nc) = (nr + 0, nc + 1);
+                    continue;
+                }
 
-                 (nr, nc) = (nr + 0, nc + 1);
-             }
+                if (input[nr][nc] == '|') intersections++;
+                if (input[nr][nc] is 'F' or 'L')
+                {
+                    var start = input[nr][nc];
+                    var intersected = false;
+                    for (var i = nc; i < input[0].Length; i++)
+                    {
+                        if (input[nr][i] == '7')
+                        {
+                            intersected = start == 'L';
+                            break;
+                        }
 
-             return intersections;
-         }
+                        if (input[nr][i] == 'J')
+                        {
+                            intersected = start == 'F';
+                            break;
+                        }
+                    }
+
+                    if (intersected) intersections++;
+                }
+
+                (nr, nc) = (nr + 0, nc + 1);
+            }
+
+            return intersections;
+        }
         
         long visit((int r, int c) pos)
         {

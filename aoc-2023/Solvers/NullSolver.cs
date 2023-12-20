@@ -1,18 +1,11 @@
 namespace aoc_2023.Solvers;
 
 
-public class NullSolver : Solver
+public class NullSolver(string number) : ISolver
 {
-    private readonly string dayNumber;
-
-    public NullSolver(string dayNumber)
-    {
-        this.dayNumber = dayNumber;
-    }
-
     [PuzzleInput("00-00")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
-        Console.WriteLine($"Failed to find Solver for day {dayNumber}");
+        Console.WriteLine($"Failed to find Solver for day {number}");
     }
 }

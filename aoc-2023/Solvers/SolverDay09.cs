@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay09 : Solver
+public class SolverDay09 : ISolver
 {
     [PuzzleInput("09-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var answer = input.Select(line => line.Split(" ")
                         .Select(int.Parse).ToList())
@@ -38,5 +38,4 @@ public class SolverDay09 : Solver
             return extrapolated;
         }
     }
-
 }

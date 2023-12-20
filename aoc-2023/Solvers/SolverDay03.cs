@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay03 : Solver
+public class SolverDay03 : ISolver
 {
     [PuzzleInput("03-01")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var dirs = new (int dr, int dc)[]
         {
@@ -72,9 +72,7 @@ public class SolverDay03 : Solver
                 }
             }
 
-            return foundGears.Count != 0 ?
-                (true, foundGears)
-                : (false, new());
+            return foundGears.Count != 0 ? (true, foundGears) : (false, []);
         }
     }
 }

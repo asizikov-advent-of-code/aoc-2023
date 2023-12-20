@@ -1,15 +1,15 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay02 : Solver
+public class SolverDay02 : ISolver
 {
     [PuzzleInput("02-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var answer = 0;
-        for (var i = 0; i < input.Length; i++)
+        foreach (var line in input)
         {
             var bag = new Dictionary<string, int>();
-            foreach (var hand in input[i].Split(": ")[1].Split("; "))
+            foreach (var hand in line.Split(": ")[1].Split("; "))
             {
                 foreach (var ball in hand.Split(", "))
                 {

@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay19 : Solver
+public class SolverDay19 : ISolver
 {
     [PuzzleInput("19-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var workflows = new Dictionary<string, string[]>();
         foreach (var line in input)

@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay14 : Solver
+public class SolverDay14 : ISolver
 {
     [PuzzleInput("14-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var platform = input.Select(l => l.ToCharArray()).ToArray();
         var (width, height) = (platform[0].Length, platform.Length);
@@ -15,7 +15,7 @@ public class SolverDay14 : Solver
             tilt();
             var l = load();
             history.Add(l);
-            memory.TryAdd(l, new List<int>());
+            memory.TryAdd(l, []);
             memory[l].Add(i);
         }
 
@@ -105,7 +105,6 @@ public class SolverDay14 : Solver
             }
 
             // tilt right
-
             for (var c = width - 1; c >= 0; c--)
             {
                 for (var r = 0; r < height; r++)
@@ -121,7 +120,6 @@ public class SolverDay14 : Solver
                     (platform[pos.r][pos.c], platform[r][c]) = (platform[r][c], platform[pos.r][pos.c]);
                 }
             }
-
         }
     }
 }

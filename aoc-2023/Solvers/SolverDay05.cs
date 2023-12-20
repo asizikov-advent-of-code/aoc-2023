@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay05 : Solver
+public class SolverDay05 : ISolver
 {
     [PuzzleInput("05-01")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var seedsToProcess = new List<(long start, long end)[]>();
         var (mapSource, mapTarget) = (0, 0);

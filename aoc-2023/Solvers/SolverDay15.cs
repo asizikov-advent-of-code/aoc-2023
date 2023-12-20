@@ -1,16 +1,14 @@
-using System.Security.Cryptography.X509Certificates;
-
 namespace aoc_2023.Solvers;
 
-public class SolverDay15 : Solver
+public class SolverDay15 : ISolver
 {
     [PuzzleInput("15-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var parts = input[0].Split(',');
 
-        var boxes = new List<Lense>[256];
-        for (var i = 0; i < 256; boxes[i++] = new());
+        var boxes = new List<Lens>[256];
+        for (var i = 0; i < 256; boxes[i++] = []);
 
         foreach (var part in parts)
         {
@@ -19,7 +17,7 @@ public class SolverDay15 : Solver
             {
                 var c = part[pos];
                 if (c is  '=' or '-') break;
-                box += (int)c;
+                box += c;
                 box *= 17;
                 box %=256;
                 label += c;
@@ -33,31 +31,30 @@ public class SolverDay15 : Solver
                     boxes[box].RemoveAt(index);
                     break;
                 case '=' when index is -1:
-                    boxes[box].Add(new Lense {Tag = label, Val = part[^1] - '0'});
+                    boxes[box].Add(new Lens {Tag = label, Val = part[^1] - '0'});
                     break;
                 case '=':
                     boxes[box][index].Val = part[^1] - '0';
-                    break;
-                default:
                     break;
             }
         }
 
         var answer = 0;
-        for (var i = 0; i < 256; i++) 
+        for (var i = 0; i < 256; i++)
         {
             if (boxes[i].Count == 0) continue;
-            for (var j = 0; j < boxes[i].Count; j++) 
+            for (var j = 0; j < boxes[i].Count; j++)
             {
-                answer += (i+1) * (j + 1) * boxes[i][j].Val;
+                answer += (i + 1) * (j + 1) * boxes[i][j].Val;
             }
         }
-       Console.WriteLine("Answer: " + answer);
+
+        Console.WriteLine("Answer: " + answer);
     }
 
-    class Lense
+    class Lens
     {
-        public string Tag {get;set;} = string.Empty;
+        public string Tag {get; init;} = string.Empty;
         public int Val {get;set;}
     };
 }

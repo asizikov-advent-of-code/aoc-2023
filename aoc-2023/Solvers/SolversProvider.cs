@@ -4,7 +4,7 @@ namespace aoc_2023.Solvers;
 
 public abstract class SolversProvider
 {
-    public static (Solver, string dataFileName) Get(string dayNumber)
+    public static (ISolver, string dataFileName) Get(string dayNumber)
     {
         if (dayNumber is null) throw new ArgumentNullException(nameof(dayNumber));
 
@@ -16,7 +16,7 @@ public abstract class SolversProvider
         var attribute = method.GetCustomAttribute<PuzzleInputAttribute>();
 
         var instance = Activator.CreateInstance(type);
-        if (instance is Solver solver)
+        if (instance is ISolver solver)
         {
             return (solver, attribute?.FileName ?? string.Empty );
         }

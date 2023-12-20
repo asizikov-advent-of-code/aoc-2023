@@ -1,11 +1,9 @@
-using System.Linq.Expressions;
-
 namespace aoc_2023.Solvers;
 
-public class SolverDay04 : Solver
+public class SolverDay04 : ISolver
 {
     [PuzzleInput("04-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var list = new List<(int number, int points)>();
         for (var c = 0; c < input.Length; c++)
@@ -33,10 +31,7 @@ public class SolverDay04 : Solver
             if (pos >= list.Count) return;
             answer++;
             var (_, points) = list[pos];
-            for (var i = 1; i <= points; i++)
-            {
-                visit(pos + i);
-            }
+            for (var i = 1; i <= points; i++) visit(pos + i);
         }
     }
 }

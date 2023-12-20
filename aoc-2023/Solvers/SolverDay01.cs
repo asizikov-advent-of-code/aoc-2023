@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay01 : Solver
+public class SolverDay01 : ISolver
 {
     [PuzzleInput("01-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var trie = new Trie();
         new [] {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}

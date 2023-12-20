@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay13 : Solver
+public class SolverDay13 : ISolver
 {
     [PuzzleInput("13-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var answer = 0;
         var pattern = new List<string>();
@@ -12,12 +12,9 @@ public class SolverDay13 : Solver
             if (line is "")
             {
                 processPattern();
-                pattern = new List<string>();
+                pattern = [];
             }
-            else
-            {
-                pattern.Add(line);
-            }
+            else pattern.Add(line);
         }
         processPattern();
 
@@ -34,10 +31,7 @@ public class SolverDay13 : Solver
                     var (left, right) = (c, c + 1);
                     while (left >= 0 && right < pattern[0].Length)
                     {
-                        if (t[left--] != t[right++])
-                        {
-                            mistakes[c]++;
-                        }
+                        if (t[left--] != t[right++]) mistakes[c]++;
                     }
                 }
             }
@@ -50,10 +44,7 @@ public class SolverDay13 : Solver
                     var (top, bottom) = (r, r + 1);
                     while (top >= 0 && bottom < pattern.Count)
                     {
-                        if (pattern[top--][c] != pattern[bottom++][c])
-                        {
-                            verticalMistakes[r]++;
-                        }
+                        if (pattern[top--][c] != pattern[bottom++][c]) verticalMistakes[r]++;
                     }
                 }
             }

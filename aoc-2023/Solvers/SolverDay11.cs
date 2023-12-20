@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay11 : Solver
+public class SolverDay11 : ISolver
 {
     [PuzzleInput("11-01")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var (galaxies, graph) = ToGraph(input);
         var distances = new Dictionary<Node, Dictionary<Node, long>>();
@@ -68,11 +68,7 @@ public class SolverDay11 : Solver
         {
             for (var c = 0; c < input[0].Length; c++)
             {
-                var node = new Node
-                {
-                    Position = (r, c),
-                    IsGalaxy = input[r][c] == '#'
-                };
+                var node = new Node((r, c), input[r][c] == '#');
                 coordToNode.Add((r, c), node);
                 graph.Add(node);
                 if (!node.IsGalaxy) continue;
@@ -104,10 +100,10 @@ public class SolverDay11 : Solver
         return (galaxies, graph);
     }
 
-    private class Node
+    private class Node((int r, int c) position, bool isGalaxy)
     {
-        public (int r, int c) Position { get; set; }
-        public bool IsGalaxy { get; set; }
+        public (int r, int c) Position { get; set; } = position;
+        public bool IsGalaxy { get; set; } = isGalaxy;
         public List<(Node? n, int cost)> Neighbours { get; set; } = new(4);
     }
 }

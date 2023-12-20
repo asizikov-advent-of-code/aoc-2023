@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay20 : Solver
+public class SolverDay20 : ISolver
 {
     [PuzzleInput("20-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var graph = new Dictionary<string, string[]>();
         var (conjunctions, flipFlops) = (new Dictionary<string, Dictionary<string ,bool>>(),new Dictionary<string, bool>() );

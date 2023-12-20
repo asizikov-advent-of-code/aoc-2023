@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay17 : Solver
+public class SolverDay17 : ISolver
 {
     [PuzzleInput("17-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var answer = int.MaxValue;
         var cost = new Dictionary<((int r, int c), (int dr, int dc), int steps), int>();
@@ -47,7 +47,7 @@ public class SolverDay17 : Solver
                             nextCost += input[p.r + dr * i][p.c + dc * i] - '0';
                         }
 
-                        queue.Enqueue( (next, (dr, dc), sameDir ? (s + 1) : 4, nextCost), nextCost);
+                        queue.Enqueue( (next, (dr, dc), sameDir ? s + 1 : 4, nextCost), nextCost);
                     }
                 }
             }

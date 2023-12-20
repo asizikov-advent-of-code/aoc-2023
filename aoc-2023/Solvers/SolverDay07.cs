@@ -1,7 +1,7 @@
 namespace aoc_2023.Solvers;
 
 
-public class SolverDay07 : Solver
+public class SolverDay07 : ISolver
 {
     enum HandType
     {
@@ -15,7 +15,7 @@ public class SolverDay07 : Solver
     }
 
     [PuzzleInput("07-01")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var cardOrder = new Dictionary<char, int>
         {
@@ -80,10 +80,7 @@ public class SolverDay07 : Solver
             if (a.type != b.type) return a.type - b.type;
             for (var i = 0; i < a.hand.Length; i++)
             {
-                if (a.hand[i] != b.hand[i])
-                {
-                    return cardOrder[a.hand[i]] - cardOrder[b.hand[i]];
-                }
+                if (a.hand[i] != b.hand[i]) return cardOrder[a.hand[i]] - cardOrder[b.hand[i]];
             }
 
             return 0;

@@ -2,10 +2,10 @@ using System.Globalization;
 
 namespace aoc_2023.Solvers;
 
-public class SolverDay18 : Solver
+public class SolverDay18 : ISolver
 {
     [PuzzleInput("18-02")]
-    public override void Solve(string[] input)
+    public void Solve(string[] input)
     {
         var coordinates = new List<(long r, long c)>
         {

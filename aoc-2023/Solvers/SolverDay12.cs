@@ -1,9 +1,9 @@
 namespace aoc_2023.Solvers;
 
-public class SolverDay12 : Solver
+public class SolverDay12 : ISolver
 {
     [PuzzleInput("12-02")]
-    public override void Solve(string[] lines)
+    public void Solve(string[] lines)
     {
         var answer = 0L;
         foreach (var line in lines)
@@ -23,7 +23,7 @@ public class SolverDay12 : Solver
         {
             var key = new string(stage) + currentGroup;
 
-            if (memo.ContainsKey(key)) return memo[key];
+            if (memo.TryGetValue(key, out var ways)) return ways;
             if (currentGroup == groups.Count) return stage.Contains('#') ? 0 : 1;
 
             var currentGroupSize = groups[currentGroup];

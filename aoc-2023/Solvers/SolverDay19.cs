@@ -61,10 +61,10 @@ public class SolverDay19 : Solver
             Dictionary<char, (int l, int r)> part,
             string workflow)
         {
+            if (!rule.Contains(':')) return [(part, rule, true)];
+
             var left = new Dictionary<char, (int l, int r)>(part);
             var right = new Dictionary<char, (int l, int r)>(part);
-
-            if (!rule.Contains(':')) return [(left, rule, true)];
 
             var separator = rule.IndexOf(':');
             var (key, op, dest, value) = (rule[0], rule[1], rule[(separator + 1)..], int.Parse(rule[2..separator]));

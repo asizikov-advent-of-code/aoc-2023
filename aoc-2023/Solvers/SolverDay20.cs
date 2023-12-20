@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 namespace aoc_2023.Solvers;
 
 public class SolverDay20 : Solver
@@ -24,7 +22,7 @@ public class SolverDay20 : Solver
                     flipFlops.TryAdd(sanitizedName, false); // off
                     break;
                 case '&':
-                    conjunctions.Add(sanitizedName, new Dictionary<string, bool>());
+                    conjunctions.Add(sanitizedName, []);
                     break;
             }
             
@@ -33,7 +31,6 @@ public class SolverDay20 : Solver
             {
                 graph[sanitizedName].Add(connection);
             }
-            
         }
         
         foreach (var key in graph.Keys)
@@ -44,7 +41,6 @@ public class SolverDay20 : Solver
             }
         }
 
-
         var (informationCollected, buttonPressed) = (false, 0L);
         var memory = conjunctions["nc"]
             .ToDictionary<KeyValuePair<string, bool>, string, long>(inputs => inputs.Key, inputs => 0);
@@ -54,19 +50,16 @@ public class SolverDay20 : Solver
             buttonPressed++;
             sendSignal();
         }
-        
-        // get lc
-       
+
         Console.WriteLine($": {memory.Values.Aggregate(Lcm)}");
 
         void sendSignal()
         {
             var q = new Queue<(string target, string sender, bool isLow)>();
             q.Enqueue(("broadcaster", "button", true));
-        
+
             while (q.Count > 0)
             {
-               
                 var (target,sender, isLow) = q.Dequeue();
                 if (target is "broadcaster")
                 {
@@ -104,7 +97,7 @@ public class SolverDay20 : Solver
                 }
             }
         }
-        
+
         long Lcm (long a, long b) => Math.Abs(a * b) / Gcd(a, b);
         long Gcd (long a, long b) => b == 0 ? a : Gcd(b, a % b);
     }
